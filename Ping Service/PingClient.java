@@ -13,7 +13,7 @@ public class PingClient{
 			byte[] rd,sd;
 			String reply;
 			DatagramPacket sp,rp;
-			int count=0,max=0,min=0;
+			int count=0,max=0,min=10000;
 			double loss=0,avar=0;
 			Long time1,time2;
 
@@ -41,10 +41,10 @@ public class PingClient{
         			long timeDiff=time2 - time1;
 
         			avar+=timeDiff;
-        			min=(int)timeDiff;
         			if(max<timeDiff){
         				max=(int)timeDiff;
-        			}else if (min>timeDiff) {
+        			}
+				if (min>timeDiff) {
         				min=(int)timeDiff;
         			}
 
