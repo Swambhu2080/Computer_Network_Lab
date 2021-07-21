@@ -37,8 +37,11 @@ public class FClient {
 			{   
 				//recieve data
 				// get next consignment
-
-				rd=new byte[515+(Integer.toString(prevrdt)).length()];
+				if (count<9) {
+					rd=new byte[515+(Integer.toString(prevrdt)).length()];
+				}else{
+					rd=new byte[515+(Integer.toString(prevrdt)).length()+1];
+				}
 				rp=new DatagramPacket(rd,rd.length); 
 			    cs.receive(rp);	
 
