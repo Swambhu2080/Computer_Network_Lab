@@ -14,7 +14,7 @@ public class FClient {
 
 	    	cs = new DatagramSocket();
 			Random random = new Random();
-			byte[] rd, sd;
+			byte[] rd, sd, data;
 			byte[] RDT = new byte[] { 0x52, 0x44, 0x54 };
 			byte[] SEQ_0 = new byte[] { 0x30 };
 	    	byte[] END = new byte[] { 0x45, 0x4e, 0x44 };
@@ -24,7 +24,7 @@ public class FClient {
 			int count=1,prevrdt=9;
 			boolean end = false;
 			String filename="demoText.html",GREETING = "REQUEST"+filename+"\r\n", Acknowledgement;
-			int frame=5;
+			int frame=5,i=0,flag=0;
 			// write received data into demoText1.html
 			fos = new FileOutputStream(filename.split("\\.")[0] + "1." + filename.split("\\.")[1]);
 
@@ -53,7 +53,17 @@ public class FClient {
 					prevrdt=Integer.parseInt((reply.substring(3,4)));
 					System.out.println(reply);
 					if (!(reply.contains("END"))){//write the data excluding the end part
-						byte[] data= Arrays.copyOfRange(rp.getData(), (reply.substring(3,4)).length() + 3, rp.getData().length + 2 - CRLF.length);
+						for(i=0;i<(rp.getData()).length;i++){
+							if(rp.getData()[i]==0x00){
+								flag=1;
+								break;
+							}
+						}
+						if (flag==1) {
+							data= Arrays.copyOfRange(rp.getData(), (reply.substring(3,4)).length() + 3, i - CRLF.length);
+						}else{
+							data= Arrays.copyOfRange(rp.getData(), (reply.substring(3,4)).length() + 3, rp.getData().length + 2 - CRLF.length);
+						}
 						fos.write(data);
 					}
 				}

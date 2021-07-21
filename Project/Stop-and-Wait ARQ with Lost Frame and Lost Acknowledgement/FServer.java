@@ -1,29 +1,29 @@
 import java.net.*;
 import java.io.*;
 import java.util.*;
- 
+
 public class FServer {
- 	private static final double LOSS_RATE = 0.3;
+	private static final double LOSS_RATE = 0.3;
     private static final int AVERAGE_DELAY = 100;  // milliseconds
-	public static void main(String[] args) {
- 
-		DatagramSocket ss = null;
-		FileInputStream fis = null;
-		DatagramPacket rp, sp=null;
-		byte[] rd, sd, mmsg, temp;
-		byte[] RDT = new byte[] { 0x52, 0x44, 0x54 };
-		byte[] SEQ_0 = new byte[] { 0x30 };
+    public static void main(String[] args) {
+    	
+    	DatagramSocket ss = null;
+    	FileInputStream fis = null;
+    	DatagramPacket rp, sp=null;
+    	byte[] rd, sd, mmsg, temp;
+    	byte[] RDT = new byte[] { 0x52, 0x44, 0x54 };
+    	byte[] SEQ_0 = new byte[] { 0x30 };
     	byte[] END = new byte[] { 0x45, 0x4e, 0x44 };
     	byte[] CRLF = new byte[] { 0x0a, 0x0d };
-		InetAddress ip;
-		int port;
-		int sequnce=0,count=0;
-		try {
-			ss = new DatagramSocket(Integer.parseInt(args[0]));
-			System.out.println("Server is up....");
-			Random random = new Random();
-			int notsend=0;
-			String data,strGreeting, acknowledgement;
+    	InetAddress ip;
+    	int port;
+    	int sequnce=0,count=0;
+    	try {
+    		ss = new DatagramSocket(Integer.parseInt(args[0]));
+    		System.out.println("Server is up....");
+    		Random random = new Random();
+    		int notsend=0;
+    		String data,strGreeting, acknowledgement;
 			int result = 0,frame=5; // number of bytes read
 			boolean end=false;
 			
@@ -43,16 +43,16 @@ public class FServer {
                 // read file into buffer
                 fis = new FileInputStream(a);
                 ss.setSoTimeout(30);
-			}
-	 
-			while(result!=-1 || !end){
-				rd=new byte[100];
-				sd=new byte[512];
+            }
+            
+            while(result!=-1 || !end){
+            	rd=new byte[100];
+            	sd=new byte[512];
 				//decides whether to send the data or not
-				if (random.nextDouble() < LOSS_RATE) {
-					System.out.println("Forgot to send the data \n");
-					continue;
-				}
+            	if (random.nextDouble() < LOSS_RATE) {
+            		System.out.println("Forgot to send the data \n");
+            		continue;
+            	}
 				if(notsend!=1){// prepare data
 					result = fis.read(sd);
 					sequnce++;
@@ -103,12 +103,12 @@ public class FServer {
 			}
 		}	
 	}
-	 public static byte[] concatenateByteArrays(byte[] a, byte[] b, byte[] c, byte[] d) {
-        byte[] result = new byte[a.length + b.length + c.length + d.length]; 
-        System.arraycopy(a, 0, result, 0, a.length); 
-        System.arraycopy(b, 0, result, a.length, b.length);
-        System.arraycopy(c, 0, result, a.length+b.length, c.length);
-        System.arraycopy(d, 0, result, a.length+b.length+c.length, d.length);
-        return result;
-    }
+	public static byte[] concatenateByteArrays(byte[] a, byte[] b, byte[] c, byte[] d) {
+		byte[] result = new byte[a.length + b.length + c.length + d.length]; 
+		System.arraycopy(a, 0, result, 0, a.length); 
+		System.arraycopy(b, 0, result, a.length, b.length);
+		System.arraycopy(c, 0, result, a.length+b.length, c.length);
+		System.arraycopy(d, 0, result, a.length+b.length+c.length, d.length);
+		return result;
+	}
 }
