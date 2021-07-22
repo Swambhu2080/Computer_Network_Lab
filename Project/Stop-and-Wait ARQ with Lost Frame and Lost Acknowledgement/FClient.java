@@ -32,6 +32,7 @@ public class FClient {
 		    sd=GREETING.getBytes();	 
 		    sp=new DatagramPacket(sd,sd.length, InetAddress.getByName(args[0]),Integer.parseInt(args[1]));	 
 			cs.send(sp);
+			System.out.println("Requesting "+filename+" from Server ");
 
 			while(!end)
 			{   
@@ -54,8 +55,8 @@ public class FClient {
 			    }
 				else{//else print the data
 					prevrdt=Integer.parseInt((reply.substring(3,4)));
-					System.out.println(reply);
 					if (!(reply.contains("END"))){//write the data excluding the end part
+						System.out.println("Received Consignment "+prevrdt);
 						for(i=0;i<(rp.getData()).length;i++){
 							if(rp.getData()[i]==0x00){
 								flag=1;
@@ -68,19 +69,23 @@ public class FClient {
 							data= Arrays.copyOfRange(rp.getData(), (reply.substring(3,4)).length() + 3, rp.getData().length + 2 - CRLF.length);
 						}
 						fos.write(data);
+					}else{
+						System.out.println("END");
 					}
 				}
 				//decides whether to send the Acknowledgement or not
 				if (random.nextDouble() < LOSS_RATE) {
-					System.out.println("Forgot to send the acknowledgement \n");				
+					System.out.println("Forgot ACK "+count+" \n");				
 				}else{
 					if (reply.contains("END")) {// if last consignment
 						end = true;
 						Acknowledgement = "ACK 0"+" \r\n";
 					}
 					//send acknowledgement
-					else
+					else{
 						Acknowledgement = "ACK "+ count+" \r\n";
+						System.out.println("Sent ACK "+count);
+					}
 					// send ACK      
 				    sd=Acknowledgement.getBytes();	
 				    sp=new DatagramPacket(sd,sd.length, 

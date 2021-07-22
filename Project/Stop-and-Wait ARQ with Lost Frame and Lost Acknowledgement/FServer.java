@@ -35,11 +35,11 @@ public class FServer {
 			ip = rp.getAddress(); 
 			port =rp.getPort();
 			strGreeting = new String(rp.getData());
-			System.out.println("Client says :: " + strGreeting);
 
 			if (new String(rp.getData()).contains("REQUEST")) {
 				String a = strGreeting.trim();
                 a = a.substring(7, a.length());//Sliceout the filename
+                System.out.println("Reqeuest received from client for " +a);
                 // read file into buffer
                 fis = new FileInputStream(a);
                 ss.setSoTimeout(30);
@@ -50,7 +50,7 @@ public class FServer {
             	sd=new byte[512];
 				//decides whether to send the data or not
             	if (random.nextDouble() < LOSS_RATE) {
-            		System.out.println("Forgot to send the data \n");
+            		System.out.println("Forgot Consignment "+(sequnce+1)+" \n");
             		continue;
             	}
 				if(notsend!=1){// prepare data
@@ -65,7 +65,6 @@ public class FServer {
 					end=true;
 				}else{
 					if(result<512){
-						System.out.println(result);
 						temp=sd;
 						sd= new byte[result];
 						sd= Arrays.copyOfRange(temp,0,result);
@@ -73,6 +72,7 @@ public class FServer {
 					mmsg= new byte[(RDT.length)+((Integer.toString(sequnce)).length())+sd.length+CRLF.length];
 					mmsg=concatenateByteArrays(RDT,(Integer.toString(sequnce)).getBytes(),sd,CRLF);
 					sp=new DatagramPacket(mmsg,mmsg.length,ip,port);
+					System.out.println("Sent Consignment "+sequnce);
 				}
 				ss.send(sp);
 				//RECEIVE ACKNOWLEDGEMENT
@@ -82,10 +82,14 @@ public class FServer {
 					rp = new DatagramPacket(rd,rd.length);
 					ss.receive(rp);
 					acknowledgement = new String(rp.getData());
-					System.out.println("Client says :: " + acknowledgement);
+					System.out.println("Received " + acknowledgement);
 					notsend=0;
+					if (result==-1) {
+						System.out.println("END");
+					}
 				}catch(SocketTimeoutException e){
 					notsend=1;// acknowledgement not received from client
+					System.out.println("Timeout ");
 					end=false;
 					continue;
 				}
