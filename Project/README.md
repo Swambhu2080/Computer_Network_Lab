@@ -65,3 +65,28 @@ Window Size = 4
 
 Time-Out = 30ms
 
+
+## Assignment Structure:
+
+#### Assignment 1
+
+| Question Number | Problem Statement  |
+| :---------- | :----------------------------------- |
+| #1 |  Stop-and-Wait ARQ Normal Operation  |
+
+#### Assignment 2
+
+| Question Number | Problem Statement  |
+| :---------- | :------- |
+|  #1 | Stop-and-Wait ARQ Normal Operation using RDT with Text File |
+|  #2 | Stop-and-Wait ARQ with Lost Frame |
+|  #3 | Stop-and-Wait ARQ with Lost Acknowledgement |
+|  #4 | Stop-and-Wait ARQ with Lost Frame and Lost Acknowledgement |
+|  #5 | Stop-and-Wait ARQ with Different File Types |
+
+
+#### Assignment 3
+
+| Question Number | Problem Statement  |
+| :---------- | :------- |
+| #1 |  Go-Back-N  |
