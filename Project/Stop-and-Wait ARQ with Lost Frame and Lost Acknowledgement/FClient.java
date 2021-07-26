@@ -17,13 +17,13 @@ public class FClient {
 			byte[] rd, sd, data;
 			byte[] RDT = new byte[] { 0x52, 0x44, 0x54 };
 			byte[] SEQ_0 = new byte[] { 0x30 };
-	    	byte[] END = new byte[] { 0x45, 0x4e, 0x44 };
-	    	byte[] CRLF = new byte[] { 0x0a, 0x0d };
+	    		byte[] END = new byte[] { 0x45, 0x4e, 0x44 };
+	    		byte[] CRLF = new byte[] { 0x0a, 0x0d };
 			String reply="";
 			DatagramPacket sp,rp;
 			int count=1,prevrdt=9;
 			boolean end = false;
-			String filename="demoText.html",GREETING = "REQUEST"+filename+"\r\n", Acknowledgement;
+			String filename=args[2],GREETING = "REQUEST"+filename+"\r\n", Acknowledgement;
 			int frame=5,i=0,flag=0;
 			// write received data into demoText1.html
 			fos = new FileOutputStream(filename.split("\\.")[0] + "1." + filename.split("\\.")[1]);
@@ -89,8 +89,8 @@ public class FClient {
 					// send ACK      
 				    sd=Acknowledgement.getBytes();	
 				    sp=new DatagramPacket(sd,sd.length, 
-										  InetAddress.getByName(args[0]),
-	  									  Integer.parseInt(args[1]));	  
+							InetAddress.getByName(args[0]),
+	  						Integer.parseInt(args[1]));	  
 					cs.send(sp);
 					count++;
 				}	
